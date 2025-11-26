@@ -1,0 +1,73 @@
+<div class="cart-container" *ngIf="cartData; else loadingTemplate">
+
+  <header class="header">
+    <div class="header-content">
+      <h1 class="title">🛒 Carrito de Compras</h1>
+      <p class="subtitle">ID del Carrito: #{{ cartData.cartId }}</p>
+    </div>
+  </header>
+
+  <section class="products-section">
+    <div class="section-header">
+      <span class="product-icon">📦</span>
+      <h2 class="section-title">Productos en el Carrito</h2>
+    </div>
+
+    <div class="cart-item-list">
+      <article class="cart-item-card" *ngFor="let item of cartData.items">
+        <div class="item-details">
+          <img [src]="item.imageURL" [alt]="item.name" class="product-image">
+          <div>
+            <h3 class="item-name">{{ item.name }}</h3>
+            <p class="item-id">Product ID: #{{ item.productId }}</p>
+          </div>
+        </div>
+
+        <div class="item-pricing">
+          <div class="price-col">
+            <p class="label">PRECIO</p>
+            <p class="value">${{ item.price | number:'1.2-2' }}</p>
+          </div>
+          <div class="price-col">
+            <p class="label">CANTIDAD</p>
+            <p class="value blue-text">{{ item.quantity }}</p>
+          </div>
+          <div class="price-col">
+            <p class="label">SUBTOTAL</p>
+            <p class="value blue-text">${{ item.subtotal | number:'1.2-2' }}</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="summary-section">
+    <div class="summary-line">
+      <span class="icon">🧾 Total de Items</span>
+      <span class="value item-count">{{ cartData.totals.totalItems }} producto{{ cartData.totals.totalItems === 1 ? '' : 's' }}</span>
+    </div>
+    <div class="summary-line">
+      <span class="icon">💰 Subtotal</span>
+      <span class="value">${{ cartData.totals.subtotal | number:'1.2-2' }}</span>
+    </div>
+    <div class="summary-line discount-line">
+      <span class="icon">🎁 Descuento Aplicado</span>
+      <span class="value zero-discount">${{ cartData.totals.discountApplied | number:'1.2-2' }}</span>
+    </div>
+
+    <div class="summary-line total-line">
+      <span class="icon total-text">💳 Total a Pagar</span>
+      <span class="value total-text">${{ cartData.totals.totalAmount | number:'1.2-2' }}</span>
+    </div>
+  </section>
+
+  <footer class="action-footer">
+    <button class="checkout-button" (click)="proceedToCheckout()">
+      Proceder al Pago 🚀
+    </button>
+  </footer>
+</div>
+
+<ng-template #loadingTemplate>
+  <p class="loading-state" *ngIf="isLoading">Cargando carrito...</p>
+</ng-template>
